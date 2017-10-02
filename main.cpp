@@ -16,7 +16,7 @@ int main() {
   double current = 0.0;
   int tauRef = 2;
   double Vreset = -70.0;
-  double Vtreshold = -55.0;
+  double Vthreshold = -55.0;
   double deltaTime = 0.0;
 
   std::cout << "insert current you want to apply:" << '\n';
@@ -31,7 +31,7 @@ int main() {
     n.updateState(i, current);
   }
 
-  std::cout << "Simulations generated " << n.getSpikes() << 'spikes' << '\n';
+  std::cout << "Simulations generated " << n.getSpikes() << " spikes" << '\n';
   std::cout << "at times:" << '\t';
   n.printSpikeTimes();
 

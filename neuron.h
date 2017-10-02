@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 class neuron {
 
 private:
@@ -11,7 +13,7 @@ private:
   int tau;
   int tauRef;
   double step;
-  double time;
+  double currentTime;
   double potentialFactor;
   double spikeThreshold;
   bool refractoring;
