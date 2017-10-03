@@ -13,7 +13,7 @@ private:
   int tau;
   int tauRef;
   double step;
-  double currentTime;
+  double spikeTime;
   double potentialFactor;
   double spikeThreshold;
   bool refractoring;

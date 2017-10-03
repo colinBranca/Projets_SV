@@ -18,7 +18,7 @@ neuron::neuron() {
   tauRef = 0;
   step = 0.0;
   potentialFactor = 0.0;
-  currentTime = 0.0;
+  spikeTime = 0.0;
   spikeThreshold = 0.0;
   refractoring = false;
 }
@@ -33,7 +33,7 @@ neuron::neuron(double r, double c, int tr, double h, double v, double st) {
   tauRef = tr;
   step = h;
   potentialFactor = exp(-step / tau);
-  currentTime = 0;
+  spikeTime = 0;
   spikeThreshold = st;
   refractoring = false;
 }
@@ -55,29 +55,31 @@ vector<double> neuron::getTimesOfSpikes() {
 
 //update state of neuron
 void neuron::updateState(double t, double current) {
-  if(isRefractoring(t)) {
+
+  if(membranePotential >= spikeThreshold) {
+    membranePotential = 0.0;
+    refractoring = true;
+    spikeTime = t;
+    timesOfSpikes.push_back(t);
+    spikes ++;
+  }
+  else if(isRefractoring(t)) {
     membranePotential = 0.0;
   }
   else {
-    double T = t - currentTime;
-    double n = T/step;
-    currentTime += t;
-    double tmp_potentialFactor = pow(potentialFactor, n);
+    // double T = t - currentTime;
+    // double n = T/step;
+    // double tmp_potentialFactor = pow(potentialFactor, n);
 
-    membranePotential = tmp_potentialFactor * membranePotential + current *  membraneResistance * (1 - tmp_potentialFactor);
+    // membranePotential = tmp_potentialFactor * membranePotential + current *  membraneResistance * (1 - tmp_potentialFactor);
+    membranePotential = potentialFactor * membranePotential + current *  membraneResistance * (1 - potentialFactor);
 
-    if(membranePotential >= spikeThreshold) {
-      membranePotential = 0.0;
-      refractoring = true;
-      timesOfSpikes.push_back(currentTime);
-      spikes ++;
-    }
   }
 }
 
 //return if the neuron is refractoring and update refractoring value if needed
 bool neuron::isRefractoring(double t) {
-  if(t - currentTime >= tauRef) {
+  if(t - spikeTime >= tauRef) {
     refractoring = false;
   }
   return refractoring;
