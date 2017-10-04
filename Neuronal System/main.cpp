@@ -10,14 +10,14 @@ using namespace std;
 #include "neuron.h"
 
 int main(int argc, char* argv[]) {
-  double conductivity = 250.0;
-  int tau = 10;
+  double conductivity = 1.0;
+  int tau = 20;
   double resistance = tau/conductivity;
   double h = 0.1;
   double ext_i = atof(argv[1]);
   int tauRef = 2;
-  double Vreset = -70.0;
-  double Vthreshold = -55.0;
+  double Vreset = 0.0;
+  double Vthreshold = 20.0;
   double deltaTime = atof(argv[2]);
 
   std::ofstream outfile("membranePotentials.txt", std::ios::out);
