@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
   double conductivity = 1.0;
   int tau = 20;
   double resistance = tau/conductivity;
-  double h = 0.1;
+  double h = 1;
   double ext_i = atof(argv[1]);
   int tauRef = 2;
   double Vreset = 0.0;

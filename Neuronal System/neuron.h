@@ -13,7 +13,6 @@ private:
   int tau;
   int tauRef;
   double step;
-  double spikeTime;
   double potentialFactor;
   double spikeThreshold;
   bool refractoring;
@@ -29,7 +28,9 @@ public:
   //update function
   void updateState(double t, double current);
   //return if the neuron is refractoring and update refractoring value if needed
-  bool isRefractoring(double t);
+  bool isRefractoring();
+  //update refractoring
+  void updateRefractoring(int spike);
   //print spike times
   void printSpikeTimes();
 

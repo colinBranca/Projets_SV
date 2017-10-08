@@ -8,6 +8,8 @@ using namespace std;
 
 #include "neuron.h"
 
+double refractoringTime = 0.0;
+
 //default constructor
 neuron::neuron() {
   membranePotential = 0.0;
@@ -18,7 +20,6 @@ neuron::neuron() {
   tauRef = 0;
   step = 0.0;
   potentialFactor = 0.0;
-  spikeTime = 0.0;
   spikeThreshold = 0.0;
   refractoring = false;
 }
@@ -33,7 +34,6 @@ neuron::neuron(double r, double c, int tr, double h, double v, double st) {
   tauRef = tr;
   step = h;
   potentialFactor = exp(-step / tau);
-  spikeTime = 0;
   spikeThreshold = st;
   refractoring = false;
 }
@@ -56,14 +56,15 @@ vector<double> neuron::getTimesOfSpikes() {
 //update state of neuron
 void neuron::updateState(double t, double current) {
 
+  updateRefractoring(0);
+
   if(membranePotential >= spikeThreshold) {
     membranePotential = 0.0;
-    refractoring = true;
-    spikeTime = t;
+    updateRefractoring(1);
     timesOfSpikes.push_back(t);
     spikes ++;
   }
-  else if(isRefractoring(t)) {
+  else if(refractoring) {
     membranePotential = 0.0;
   }
   else {
@@ -78,11 +79,22 @@ void neuron::updateState(double t, double current) {
 }
 
 //return if the neuron is refractoring and update refractoring value if needed
-bool neuron::isRefractoring(double t) {
-  if(t - spikeTime >= tauRef) {
-    refractoring = false;
-  }
+bool neuron::isRefractoring() {
   return refractoring;
+}
+
+//update refractoring state
+void neuron::updateRefractoring(int spike = 0) {
+  if(spike) {
+    refractoring = true;
+    refractoringTime = 2.0;
+  }
+  else {
+    refractoringTime -= step;
+    if(refractoringTime <= 0.0) {
+      refractoring = false;
+    }
+  }
 }
 
 //print spike times
