@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/main.cpp
+sstream
+-
+iostream
+-
+fstream
+-
+math.h
+-
+neuron.h
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/neuron.h
+
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/neuron.cpp
+sstream
+-
+iostream
+-
+math.h
+-
+neuron.h
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/neuron.h
+
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/neuron.h
+vector
+-
+
