@@ -12,30 +12,14 @@ double refractoringTime = 0.0;
 
 //default constructor
 neuron::neuron() {
-  membranePotential = 0.0;
-  spikes = 0;
-  membraneResistance = 0.0;
-  conductivity = 0.0;
-  tau = 0;
-  tauRef = 0;
-  step = 0.0;
-  potentialFactor = 0.0;
-  spikeThreshold = 0.0;
+  membranePotential = V_reset;
   refractoring = false;
+  intern_clock = 0.0;
 }
 
-//constructor
-neuron::neuron(double r, double c, int tr, double h, double v, double st) {
-  membranePotential = v;
-  spikes = 0;
-  membraneResistance = r;
-  conductivity = c;
-  tau = (int) r * c;
-  tauRef = tr;
-  step = h;
-  potentialFactor = exp(-step / tau);
-  spikeThreshold = st;
-  refractoring = false;
+//set i_ext
+void neuron::setCurrent(double i) {
+  i_ext = i;
 }
 
 //return membrane potential
@@ -54,27 +38,25 @@ vector<double> neuron::getTimesOfSpikes() {
 }
 
 //update state of neuron
-void neuron::updateState(double t, double current) {
+void neuron::updateState(double stopTime) {
 
-  updateRefractoring(0);
+  while(intern_clock <= stopTime) {
 
-  if(membranePotential >= spikeThreshold) {
-    membranePotential = 0.0;
-    updateRefractoring(1);
-    timesOfSpikes.push_back(t);
-    spikes ++;
-  }
-  else if(refractoring) {
-    membranePotential = 0.0;
-  }
-  else {
-    // double T = t - currentTime;
-    // double n = T/step;
-    // double tmp_potentialFactor = pow(potentialFactor, n);
+    updateRefractoring();
 
-    // membranePotential = tmp_potentialFactor * membranePotential + current *  membraneResistance * (1 - tmp_potentialFactor);
-    membranePotential = potentialFactor * membranePotential + current *  membraneResistance * (1 - potentialFactor);
-
+    if(membranePotential >= V_threshold) {
+      membranePotential = V_reset;
+      updateRefractoring();
+      timesOfSpikes.push_back(intern_clock);
+      spikes ++;
+    }
+    else if(refractoring) {
+      membranePotential = V_reset;
+    }
+    else {
+      membranePotential = potentialFactor * membranePotential + i_ext *  currentFactor;
+    }
+    intern_clock += step;
   }
 }
 
@@ -84,10 +66,10 @@ bool neuron::isRefractoring() {
 }
 
 //update refractoring state
-void neuron::updateRefractoring(int spike = 0) {
-  if(spike) {
+void neuron::updateRefractoring() {
+  if(!refractoring) {
     refractoring = true;
-    refractoringTime = 2.0;
+    refractoringTime = tauRef;
   }
   else {
     refractoringTime -= step;

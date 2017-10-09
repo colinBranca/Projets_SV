@@ -10,30 +10,31 @@ using namespace std;
 #include "neuron.h"
 
 int main(int argc, char* argv[]) {
-  double conductivity = 1.0;
-  int tau = 20;
-  double resistance = tau/conductivity;
-  double h = 1;
-  double ext_i = atof(argv[1]);
-  int tauRef = 2;
-  double Vreset = 0.0;
-  double Vthreshold = 20.0;
-  double deltaTime = atof(argv[2]);
+  double current = atof(argv[2]);
+  double totalTime = atof(argv[3]);
+  double startTime = atof(argv[4]);
+  double stopTime = atof(argv[5]);
+  double i_ext = 0.0
 
   std::ofstream outfile("membranePotentials.txt", std::ios::out);
-  outfile << "Simulation with current ext_i = " << ext_i << " during " << 2*deltaTime << "ms" << '\n';
+  outfile << "Simulation with current ext_i = " << current << " during " << totalTime << "ms" << '\n';
 
-  neuron n = neuron(resistance, conductivity, tauRef, h, Vreset, Vthreshold);
+  neuron n = neuron();
+  n.setCurrent(i_ext);
 
-  for(double i = 0.0f; i <= 2.0*deltaTime; i += h) {
-    if(i >= deltaTime/2.0 && i<= 3.0*deltaTime/2.0) {
-      n.updateState(i, ext_i);
+  for(double t = 0.0; t <= totalTime; ++t) {
+    if(i_ext == 0.0 && t >= startTime && t <= stopTime) {
+      i_ext = current;
+      n.setCurrent(i_ext);
     }
-    else {
-        n.updateState(i, 0.0);
+    else if(i_ext =! 0.0 && (t < startTime || t > stopTime)) {
+      i_ext = 0.0;
+      n.setCurrent(i_ext);
     }
+    n.update(t);
+
     double nV = n.getMembranePotential();
-    outfile << i << " : "<< nV << '\n';
+    outfile << t << " : "<< nV << '\n';
   }
 
   std::cout << "Simulations generated " << n.getSpikes() << " spikes" << '\n';

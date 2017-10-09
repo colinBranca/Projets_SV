@@ -5,33 +5,40 @@
 class neuron {
 
 private:
+  //constant parameters
+  const double membraneResistance = 20.0;
+  const double conductivity = 1.0;
+  const double tau = 20;
+  const double tauRef = 2.0;
+  const double V_threshold = 20.0;
+  const double V_reset = 0.0;
+  const double step = 0.1;
+  const double potentialFactor = exp(-step/tau);
+  const double currentFactor = membraneResistance * (1.0 - potentialFactor);
+  //variable parameters
   double membranePotential;
   int spikes;
   std::vector<double> timesOfSpikes;
-  double membraneResistance;
-  double conductivity;
-  int tau;
-  int tauRef;
-  double step;
-  double potentialFactor;
-  double spikeThreshold;
   bool refractoring;
+  double intern_clock;
+  double i_ext;
 
 public:
-  //constructors
+  //constructor
   neuron();
-  neuron(double r, double c, int tr, double h, double v, double st);
   //get functions
   double getMembranePotential();
   int getSpikes();
   std::vector<double> getTimesOfSpikes();
   //update function
-  void updateState(double t, double current);
+  void updateState(double stopTime);
   //return if the neuron is refractoring and update refractoring value if needed
   bool isRefractoring();
   //update refractoring
-  void updateRefractoring(int spike);
+  void updateRefractoring();
   //print spike times
   void printSpikeTimes();
+  //set i_ext
+  void setCurrent(double i);
 
 };
