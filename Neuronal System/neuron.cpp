@@ -1,5 +1,3 @@
-#pragma once
-
 #include <sstream>
 #include <iostream>
 #include <math.h>
@@ -46,7 +44,8 @@ void neuron::updateState(double stopTime) {
 
     if(membranePotential >= V_threshold) {
       membranePotential = V_reset;
-      updateRefractoring();
+      refractoring = true;
+      refractoryTime = tauRef;
       timesOfSpikes.push_back(intern_clock);
       spikes ++;
     }
@@ -67,22 +66,19 @@ bool neuron::isRefractoring() {
 
 //update refractoring state
 void neuron::updateRefractoring() {
-  if(!refractoring) {
-    refractoring = true;
-    refractoringTime = tauRef;
-  }
-  else {
-    refractoringTime -= step;
-    if(refractoringTime <= 0.0) {
-      refractoring = false;
-    }
+  refractoryTime -= step;
+  if(refractoryTime <= 0.0) {
+    refractoring = false;
   }
 }
 
 //print spike times
 void neuron::printSpikeTimes() {
-  for(size_t i=0; i < timesOfSpikes.size() - 1; i++) {
+  if(spikes == 0) {
+    return;
+  }
+  for(int i=0; i < spikes; ++i) {
     std::cout << timesOfSpikes[i] << "  ;  ";
   }
-  std::cout << timesOfSpikes[timesOfSpikes.size() - 1] << '\n';
+  std::cout << timesOfSpikes[spikes - 1] << '\n';
 }

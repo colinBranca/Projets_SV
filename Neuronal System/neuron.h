@@ -1,5 +1,3 @@
-#pragma once
-
 #include <vector>
 
 class neuron {
@@ -8,7 +6,7 @@ private:
   //constant parameters
   const double membraneResistance = 20.0;
   const double conductivity = 1.0;
-  const double tau = 20;
+  const double tau = membraneResistance * conductivity;
   const double tauRef = 2.0;
   const double V_threshold = 20.0;
   const double V_reset = 0.0;
@@ -22,6 +20,7 @@ private:
   bool refractoring;
   double intern_clock;
   double i_ext;
+  double refractoryTime;
 
 public:
   //constructor
