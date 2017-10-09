@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/g++  -W -Wall -pedantic -std=c++11 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/neuron.dir/neuron.cpp.o CMakeFiles/neuron.dir/main.cpp.o  -o neuron 
