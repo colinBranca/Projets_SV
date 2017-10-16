@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/main.cpp
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/Two Neurons Simulation/main.cpp
 sstream
 -
 iostream
@@ -15,20 +15,22 @@ fstream
 -
 math.h
 -
+vector
+-
 neuron.h
-/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/neuron.h
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/Two Neurons Simulation/neuron.h
 
-/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/neuron.cpp
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/Two Neurons Simulation/neuron.cpp
 sstream
 -
 iostream
 -
-math.h
--
 neuron.h
-/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/neuron.h
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/Two Neurons Simulation/neuron.h
 
-/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/neuron.h
+/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/Two Neurons Simulation/neuron.h
 vector
+-
+math.h
 -
 

@@ -1,4 +1,4 @@
-# Install script for directory: /Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System
+# Install script for directory: /Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/Two Neurons Simulation
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -35,5 +35,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/Two Neurons Simulation/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

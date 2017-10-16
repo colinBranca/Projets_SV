@@ -1,19 +1,23 @@
 #include <sstream>
 #include <iostream>
-#include <math.h>
 
 using namespace std;
 
 #include "neuron.h"
 
 double refractoringTime = 0.0;
-std::ostringstream oss;
 
 //default constructor
 neuron::neuron() {
   membranePotential = V_reset;
   refractoring = false;
-  intern_clock = 0.0;
+}
+
+//constructor
+neuron::neuron(std::vector<neuron> tar) {
+  membranePotential = V_reset;
+  refractoring = false;
+  targets.push_back(tar);
 }
 
 //set i_ext
@@ -36,32 +40,36 @@ vector<double> neuron::getTimesOfSpikes() {
   return timesOfSpikes;
 }
 
+//return all neuron's targets
+std::vector<neuron> neuron::getTargets() {
+  return targets;
+}
+
 //update state of neuron
-void neuron::updateState(double stopTime) {
+bool neuron::updateState(double simTime) {
+  bool spike = false;
 
-  while(intern_clock <= stopTime) {
+  updateRefractoring();
 
-    updateRefractoring();
-
-    if(membranePotential >= V_threshold) {
-      membranePotential = V_reset;
-      refractoring = true;
-      refractoryTime = tauRef;
-      timesOfSpikes.push_back(intern_clock);
-      spikes ++;
-    }
-    else if(refractoring) {
-      membranePotential = V_reset;
-    }
-    else {
-      membranePotential = potentialFactor * membranePotential + i_ext *  currentFactor;
-    }
-
-    oss << intern_clock << " : " << membranePotential + '\n';
-
-    intern_clock += step;
+  if(membranePotential >= V_threshold) {
+    membranePotential = V_reset;
+    refractoring = true;
+    refractoryTime = tauRef;
+    timesOfSpikes.push_back(simTime);
+    spikes ++;
+    spike = true;
   }
-  membranePotentials.append(oss.str());
+  else if(refractoring) {
+    membranePotential = V_reset;
+  }
+  else {
+    membranePotential = potentialFactor * membranePotential + i_ext *  currentFactor + J * buffer[bufferIndex];
+  }
+
+  buffer[bufferIndex] = 0;
+  bufferIndex = (bufferIndex + 1) % BUFFER_SIZE;
+
+  return spike;
 }
 
 //return if the neuron is refractoring and update refractoring value if needed
@@ -86,4 +94,10 @@ void neuron::printSpikeTimes() {
     std::cout << timesOfSpikes[i] << "  ;  ";
   }
   std::cout << timesOfSpikes[spikes - 1] << '\n';
+}
+
+//receive spike function
+void neuron::receive() {
+  int inputIndex = (bufferIndex - 1) % BUFFER_SIZE;
+  buffer[inputIndex] ++ ;
 }
