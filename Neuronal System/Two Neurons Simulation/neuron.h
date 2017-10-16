@@ -20,10 +20,10 @@ private:
   //variable parameters
   double membranePotential;
   int spikes;
-  std::vector<double> timesOfSpikes;
+  std::vector<int> timesOfSpikes;
   bool refractoring;
   double i_ext;
-  double refractoryTime;
+  int refractoryTime;
   std::string membranePotentials;
   std::vector<neuron> targets;
   double buffer[BUFFER_SIZE] = {};
@@ -36,10 +36,10 @@ public:
   //get functions
   std::string getMembranePotentials();
   int getSpikes();
-  std::vector<double> getTimesOfSpikes();
+  std::vector<int> getTimesOfSpikes();
   std::vector<neuron> getTargets();
   //update function
-  bool updateState(double simTime);
+  bool updateState(int simTime);
   //return if the neuron is refractoring and update refractoring value if needed
   bool isRefractoring();
   //update refractoring

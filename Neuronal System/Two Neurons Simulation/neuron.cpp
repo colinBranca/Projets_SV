@@ -5,7 +5,7 @@ using namespace std;
 
 #include "neuron.h"
 
-double refractoringTime = 0.0;
+refractoringTime = 0;
 
 //default constructor
 neuron::neuron() {
@@ -36,7 +36,7 @@ int neuron::getSpikes() {
 }
 
 //return times of spikes
-vector<double> neuron::getTimesOfSpikes() {
+vector<int> neuron::getTimesOfSpikes() {
   return timesOfSpikes;
 }
 
@@ -46,7 +46,7 @@ std::vector<neuron> neuron::getTargets() {
 }
 
 //update state of neuron
-bool neuron::updateState(double simTime) {
+bool neuron::updateState(int simTime) {
   bool spike = false;
 
   updateRefractoring();
@@ -91,9 +91,9 @@ void neuron::printSpikeTimes() {
     return;
   }
   for(int i=0; i < spikes; ++i) {
-    std::cout << timesOfSpikes[i] << "  ;  ";
+    std::cout << 0.1*timesOfSpikes[i] << "  ;  ";
   }
-  std::cout << timesOfSpikes[spikes - 1] << '\n';
+  std::cout << 0.1*timesOfSpikes[spikes - 1] << '\n';
 }
 
 //receive spike function

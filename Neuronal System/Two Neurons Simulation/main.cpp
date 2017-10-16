@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
       n1.setCurrent(i_ext);
     }
     for(vector<neuron>::iterator n = neurons.begin(); n != neurons.end(); ++n) {
-      if(n->updateState(0.1*(double)t)) {
+      if(n->updateState(t)) {
         std::vector<neuron> targets = n->getTargets();
         for(size_t tar = 0; tar < targets.size(); ++tar) {
           targets[tar].receive();
