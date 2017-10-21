@@ -1,0 +1,5 @@
+Spikes in Neuron 1 occured at times:
+4.5
+11.1
+17.7
+24.3

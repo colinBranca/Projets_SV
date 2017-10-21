@@ -25,6 +25,8 @@ sstream
 -
 iostream
 -
+vector
+-
 neuron.h
 /Users/colin/Documents/EPFL/Informatique_SV/Projets_SV/Neuronal System/Two Neurons Simulation/neuron.h
 

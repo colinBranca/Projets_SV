@@ -1,23 +1,22 @@
 #include <sstream>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
 #include "neuron.h"
 
-refractoringTime = 0;
 
 //default constructor
 neuron::neuron() {
   membranePotential = V_reset;
   refractoring = false;
-}
-
-//constructor
-neuron::neuron(std::vector<neuron> tar) {
-  membranePotential = V_reset;
-  refractoring = false;
-  targets.push_back(tar);
+  spikes = 0;
+  timesOfSpikes = {};
+  refractoryTime = 0;
+  targets = {};
+  buffer.assign(BUFFER_SIZE, 0);
+  i_ext = 0.0;
 }
 
 //set i_ext
@@ -25,9 +24,14 @@ void neuron::setCurrent(double i) {
   i_ext = i;
 }
 
+//add a target
+void neuron::addTarget(neuron* n) {
+  targets.push_back(n);
+}
+
 //return membrane potential
-std::string neuron::getMembranePotentials() {
-  return membranePotentials;
+double neuron::getMembranePotential() {
+  return membranePotential;
 }
 
 //return number of spikes
@@ -36,12 +40,12 @@ int neuron::getSpikes() {
 }
 
 //return times of spikes
-vector<int> neuron::getTimesOfSpikes() {
+vector<double> neuron::getTimesOfSpikes() {
   return timesOfSpikes;
 }
 
 //return all neuron's targets
-std::vector<neuron> neuron::getTargets() {
+std::vector<neuron*> neuron::getTargets() {
   return targets;
 }
 
@@ -49,26 +53,20 @@ std::vector<neuron> neuron::getTargets() {
 bool neuron::updateState(int simTime) {
   bool spike = false;
 
-  updateRefractoring();
-
-  if(membranePotential >= V_threshold) {
+  if(refractoring) {
     membranePotential = V_reset;
-    refractoring = true;
-    refractoryTime = tauRef;
-    timesOfSpikes.push_back(simTime);
-    spikes ++;
+    updateRefractoring();
+  }
+  else if(membranePotential >= V_threshold) {
+    addSpike(simTime);
     spike = true;
   }
-  else if(refractoring) {
-    membranePotential = V_reset;
-  }
   else {
-    membranePotential = potentialFactor * membranePotential + i_ext *  currentFactor + J * buffer[bufferIndex];
+    membranePotential = potentialFactor * membranePotential + i_ext *  currentFactor + J * (double) buffer[bufferIndex];
   }
-
   buffer[bufferIndex] = 0;
   bufferIndex = (bufferIndex + 1) % BUFFER_SIZE;
-
+  local_clock ++;
   return spike;
 }
 
@@ -79,8 +77,8 @@ bool neuron::isRefractoring() {
 
 //update refractoring state
 void neuron::updateRefractoring() {
-  refractoryTime -= step;
-  if(refractoryTime <= 0.0) {
+  refractoryTime --;
+  if(refractoryTime <= 0) {
     refractoring = false;
   }
 }
@@ -97,7 +95,17 @@ void neuron::printSpikeTimes() {
 }
 
 //receive spike function
-void neuron::receive() {
-  int inputIndex = (bufferIndex - 1) % BUFFER_SIZE;
+void neuron::receive(int simTime) {
+  int inputIndex = (simTime - local_clock + bufferIndex - 1) % BUFFER_SIZE;
   buffer[inputIndex] ++ ;
+}
+
+//add a spike
+void neuron::addSpike(int t) {
+  membranePotential = V_reset;
+  refractoring = true;
+  refractoryTime = tauRef;
+  double tmp = (double)(t) * step;
+  timesOfSpikes.push_back(tmp);
+  spikes ++;
 }
