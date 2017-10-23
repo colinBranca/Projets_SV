@@ -62,7 +62,7 @@ bool neuron::updateState(int simTime) {
     spike = true;
   }
   else {
-    membranePotential = potentialFactor * membranePotential + i_ext *  currentFactor + J * (double) buffer[bufferIndex];
+    membranePotential = potentialFactor * membranePotential + i_ext *  currentFactor + buffer[bufferIndex];
   }
   buffer[bufferIndex] = 0;
   bufferIndex = (bufferIndex + 1) % BUFFER_SIZE;
@@ -95,9 +95,14 @@ void neuron::printSpikeTimes() {
 }
 
 //receive spike function
-void neuron::receive(int simTime) {
-  int inputIndex = (simTime - local_clock + bufferIndex - 1) % BUFFER_SIZE;
-  buffer[inputIndex] ++ ;
+void neuron::receive(int simTime, double J) {
+  int inputIndex = (local_clock - simTime + bufferIndex - 1) % BUFFER_SIZE;
+  buffer[inputIndex] += J;
+}
+
+//receive spike from external system
+void neuron::receiveFromExt(double J) {
+  buffer[bufferIndex] += J;
 }
 
 //add a spike

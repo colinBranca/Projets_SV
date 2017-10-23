@@ -15,7 +15,6 @@ private:
   double potentialFactor = exp(-step/tau);
   double currentFactor = membraneResistance * (1.0 - potentialFactor);
   static constexpr double delay = 1.5;
-  static constexpr double J = 0.1;
   static constexpr int BUFFER_SIZE = 16; // delay/step + 1
   //variable parameters
   double membranePotential;
@@ -25,14 +24,13 @@ private:
   double i_ext;
   int refractoryTime;
   std::vector<neuron*> targets;
-  std::vector<int> buffer;
+  std::vector<double> buffer;
   int bufferIndex;
   int local_clock = 0;
 
 public:
   //constructor
   neuron();
-  neuron(std::vector<neuron> tar);
   //get functions
   double getMembranePotential();
   int getSpikes();
@@ -49,7 +47,8 @@ public:
   //set i_ext
   void setCurrent(double i);
   //receive spike function
-  void receive(int simTime);
+  void receive(int simTime, double J);
+  void receiveFromExt(double J);
   //add a target
   void addTarget(neuron* n);
   //add a spike
