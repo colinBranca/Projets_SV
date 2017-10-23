@@ -85,7 +85,6 @@ int main(int argc, char* argv[]) {
         }
       }
     }
-    std::cout << "pute " << simTime << '\n';
     simTime += TIME_STEP;
   }
 
