@@ -35,15 +35,16 @@ int main(int argc, char* argv[]) {
   //initialise excitatory neurons
   std::vector<neuron*> excitatoryNeurons;
   for(int i = 0; i < Ne; ++i) {
-    neuron n = neuron();
-    excitatoryNeurons.push_back(&n);
+    neuron* n = new neuron();
+    excitatoryNeurons.push_back(n);
   }
 
   //initialise inhibitory neurons
   std::vector<neuron*> inhibitoryNeurons;
   for(int i = 0; i < Ni; ++i) {
-    neuron n = neuron();
-    inhibitoryNeurons.push_back(&n);
+    neuron* n = new neuron();
+    inhibitoryNeurons.push_back(n);
+
   }
 
   //list of all neurons
@@ -76,7 +77,6 @@ int main(int argc, char* argv[]) {
     for(size_t i = 0; i < neurons.size(); ++i) {
       double J = (((int) i < Ne) ? Je : Ji);
       neuron* n = neurons[i];
-      std::cout << "neuron" << i << " / " << neurons.size() << '\n';
       n->receiveFromExt(Je * (double)distribution(gen));
       if(n->updateState(simTime)) {
         std::vector<neuron*> targets = n->getTargets();
@@ -106,15 +106,6 @@ int main(int argc, char* argv[]) {
   //
 	// outfile1.close();
   // outfile2.close();
-  for(neuron *n : neurons) {
-    free(n);
-  }
-  for(neuron *n : excitatoryNeurons) {
-    free(n);
-  }
-  for(neuron *n : inhibitoryNeurons) {
-    free(n);
-  }
 
   return 0;
 }

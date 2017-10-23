@@ -25,7 +25,7 @@ private:
   int refractoryTime;
   std::vector<neuron*> targets;
   std::vector<double> buffer;
-  int bufferIndex;
+  int bufferIndex = 0;
   int local_clock = 0;
 
 public:
