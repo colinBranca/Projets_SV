@@ -40,6 +40,8 @@ int main(int argc, char* argv[]) {
   double Je = 0.1; /**< current from excitatory neurons */
   double Ji = 0.5; /**< current from inhibitory neurons */
 
+  ofstream outfile("neurons.csv"); /**< outfile where all spikes will be printed*/
+
   /**< initialise excitatory neurons */
   std::vector<neuron*> excitatoryNeurons;
   for(int i = 0; i < Ne; ++i) {
@@ -73,8 +75,8 @@ int main(int argc, char* argv[]) {
 
   int simTime = 0;
 
-  std::default_random_engine gen;
-  std::poisson_distribution<int> distribution(2);
+  std::default_random_engine gen; /**<random number generator */
+  std::poisson_distribution<int> distribution(2); /**<poisson disrtibution */
 
   while(simTime <= totalTime) {
     // if(i_ext == current && simTime > stopCurrentTime) {
@@ -87,6 +89,7 @@ int main(int argc, char* argv[]) {
       neuron* n = neurons[i];
       n->receiveFromExt(Je * (double)distribution(gen));
       if(n->updateState(simTime)) {
+        outfile << i << "," << simTime << "\n";
         std::vector<neuron*> targets = n->getTargets();
         for(size_t tar = 0; tar < targets.size(); ++tar) {
           targets[tar]->receive(simTime, J);
@@ -95,25 +98,7 @@ int main(int argc, char* argv[]) {
     }
     simTime += TIME_STEP;
   }
-
-  // //print neurons behaviours into files
-  // ofstream outfile1("neuron1.txt");
-  // ofstream outfile2("neuron2.txt");
-  //
-	// outfile1 << "Spikes in Neuron 1 occured at times:\n";
-	// for (vector<double>::iterator i = n1.getTimesOfSpikes().begin(); i != n1.getTimesOfSpikes().end(); ++i) {
-	// 	outfile1 << *i;
-  //   outfile1 << "\n";
-	// }
-  //
-  // outfile2 << "Spikes in Neuron 2 occured at times:\n";
-	// for (vector<double>::iterator i = n2.getTimesOfSpikes().begin(); i != n2.getTimesOfSpikes().end(); ++i) {
-	// 	outfile2 << *i;
-  //   outfile2 << "\n";
-	// }
-  //
-	// outfile1.close();
-  // outfile2.close();
+  outfile.close();
 
   return 0;
 }
