@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
   int simTime = 0;
 
   std::default_random_engine gen;
-  std::poisson_distribution<int> distribution(10);
+  std::poisson_distribution<int> distribution(2);
 
   while(simTime <= totalTime) {
     // if(i_ext == current && simTime > stopCurrentTime) {
