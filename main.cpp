@@ -1,3 +1,11 @@
+/**
+ * @file main.cpp
+ * @brief neuronal system simulation
+ *
+ * @author Colin Branca
+ * @date November 2017
+ */
+
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -20,26 +28,26 @@ int main(int argc, char* argv[]) {
   }
 
   //set arguments
-  double current = atof(argv[1]);
-  int totalTime = atof(argv[2]);
-  int stopCurrentTime = totalTime/2;
-  double i_ext = current;
-  int Ne = 10000;
-  int Ni = Ne/4;
-  int epsilon = 10;
-  int Ce = Ne/epsilon;
-  int Ci = Ni/epsilon;
-  double Je = 0.1;
-  double Ji = 0.5;
+  double current = atof(argv[1]); /**< current*/
+  int totalTime = atof(argv[2]); /**< total simulation time */
+  int stopCurrentTime = totalTime/2; /**< time the current is stoped*/
+  double i_ext = current; /**< external current */
+  int Ne = 10000; /**< number of excitatory neurons */
+  int Ni = Ne/4; /**< number of inhibitory neurons */
+  int epsilon = 10; /**< epsilon */
+  int Ce = Ne/epsilon; /**< number of  connections to excitatory neurons */
+  int Ci = Ni/epsilon; /**< number of connections to inhibitory neurons */
+  double Je = 0.1; /**< current from excitatory neurons */
+  double Ji = 0.5; /**< current from inhibitory neurons */
 
-  //initialise excitatory neurons
+  /**< initialise excitatory neurons */
   std::vector<neuron*> excitatoryNeurons;
   for(int i = 0; i < Ne; ++i) {
     neuron* n = new neuron();
     excitatoryNeurons.push_back(n);
   }
 
-  //initialise inhibitory neurons
+  /**< initialise inhibitory neurons */
   std::vector<neuron*> inhibitoryNeurons;
   for(int i = 0; i < Ni; ++i) {
     neuron* n = new neuron();
@@ -47,11 +55,11 @@ int main(int argc, char* argv[]) {
 
   }
 
-  //list of all neurons
+  /**<list of all neurons */
   std::vector<neuron*> neurons = excitatoryNeurons;
   neurons.insert(neurons.end(), inhibitoryNeurons.begin(), inhibitoryNeurons.end());
 
-  //initialise neurons connections
+  /**<initialise neurons connections */
   for(size_t i = 0; i < neurons.size(); ++i) {
     for(int j = 0; j < Ce; ++j) {
       int connectionIndex = rand() % Ne;

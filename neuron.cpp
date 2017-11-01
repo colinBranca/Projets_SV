@@ -1,3 +1,12 @@
+/**
+ * @file neuron.cpp
+ * @brief neuron class
+ *
+ * @author Colin Branca
+ * @date November 2017
+ */
+
+
 #include <sstream>
 #include <iostream>
 #include <vector>

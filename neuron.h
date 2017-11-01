@@ -1,3 +1,11 @@
+/**
+ * @file neuron.h
+ * @brief neuron class
+ *
+ * @author Colin Branca
+ * @date November 2017
+ */
+
 #include <vector>
 #include <math.h>
 
