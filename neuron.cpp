@@ -7,7 +7,9 @@ using namespace std;
 #include "neuron.h"
 
 
-//default constructor
+/**
+* @brief neuron constructor
+*/
 neuron::neuron() {
   membranePotential = V_reset;
   refractoring = false;
@@ -19,37 +21,58 @@ neuron::neuron() {
   i_ext = 0.0;
 }
 
-//set i_ext
+/**
+* @brief set I_ext current
+*/
 void neuron::setCurrent(double i) {
   i_ext = i;
 }
 
-//add a target
+/**
+* @brief add a target to the neuron
+* @param n target neuron
+*/
 void neuron::addTarget(neuron* n) {
   targets.push_back(n);
 }
 
-//return membrane potential
+/**
+* @brief get the membrane potential of the neuron
+* @return the membrane potential
+*/
 double neuron::getMembranePotential() {
   return membranePotential;
 }
 
-//return number of spikes
+/**
+* @brief get the number of times the neuron spiked
+* @return number of spikes
+*/
 int neuron::getSpikes() {
   return spikes;
 }
 
-//return times of spikes
+/**
+* @brief get times the neuron spiked
+* @return spike times
+*/
 vector<double> neuron::getTimesOfSpikes() {
   return timesOfSpikes;
 }
 
-//return all neuron's targets
+/**
+* @brief get the neuron's targets
+* @return targets
+*/
 std::vector<neuron*> neuron::getTargets() {
   return targets;
 }
 
-//update state of neuron
+/**
+* @brief update neuron's state
+* @param simTime simlutation time
+* @return true if the neuron spiked, false otherwise
+*/
 bool neuron::updateState(int simTime) {
   bool spike = false;
 
@@ -70,12 +93,17 @@ bool neuron::updateState(int simTime) {
   return spike;
 }
 
-//return if the neuron is refractoring and update refractoring value if needed
+/**
+* @brief test if the neuron is refractoring
+* @return true if the neuron is refractoring, false otherwise
+*/
 bool neuron::isRefractoring() {
   return refractoring;
 }
 
-//update refractoring state
+/**
+* @brief update the refractory state of the neuron
+*/
 void neuron::updateRefractoring() {
   refractoryTime --;
   if(refractoryTime <= 0) {
@@ -83,7 +111,9 @@ void neuron::updateRefractoring() {
   }
 }
 
-//print spike times
+/**
+* @brief print the spike times
+*/
 void neuron::printSpikeTimes() {
   if(spikes == 0) {
     return;
@@ -94,18 +124,28 @@ void neuron::printSpikeTimes() {
   std::cout << 0.1*timesOfSpikes[spikes - 1] << '\n';
 }
 
-//receive spike function
+/**
+* @brief receive spike from other neuron
+* @param simTime time the other neuron spiked
+* @param J current given by the spike
+*/
 void neuron::receive(int simTime, double J) {
   int inputIndex = (local_clock - simTime + bufferIndex - 1) % BUFFER_SIZE;
   buffer[inputIndex] += J;
 }
 
-//receive spike from external system
+/**
+* @brief receive spike from external system
+* @param J current given by the spikes
+*/
 void neuron::receiveFromExt(double J) {
   buffer[bufferIndex] += J;
 }
 
-//add a spike
+/**
+* @brief add a spike to the neuron
+* @param t spike time
+*/
 void neuron::addSpike(int t) {
   membranePotential = V_reset;
   refractoring = true;

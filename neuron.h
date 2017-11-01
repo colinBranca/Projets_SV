@@ -29,29 +29,73 @@ private:
   int local_clock = 0;
 
 public:
-  //constructor
+  /**
+  * @brief neuron constructor
+  */
   neuron();
-  //get functions
+  /**
+  * @brief get the membrane potential of the neuron
+  * @return the membrane potential
+  */
   double getMembranePotential();
+  /**
+  * @brief get the number of times the neuron spiked
+  * @return number of spikes
+  */
   int getSpikes();
+  /**
+  * @brief get times the neuron spiked
+  * @return spike times
+  */
   std::vector<double> getTimesOfSpikes();
+  /**
+  * @brief get the neuron's targets
+  * @return targets
+  */
   std::vector<neuron*> getTargets();
-  //update function
+  /**
+  * @brief update neuron's state
+  * @param simTime simlutation time
+  * @return true if the neuron spiked, false otherwise
+  */
   bool updateState(int simTime);
-  //return if the neuron is refractoring and update refractoring value if needed
+  /**
+  * @brief test if the neuron is refractoring
+  * @return true if the neuron is refractoring, false otherwise
+  */
   bool isRefractoring();
-  //update refractoring
+  /**
+  * @brief update the refractory state of the neuron
+  */
   void updateRefractoring();
-  //print spike times
+  /**
+  * @brief print the spike times
+  */
   void printSpikeTimes();
-  //set i_ext
+  /**
+  * @brief set I_ext current
+  */
   void setCurrent(double i);
-  //receive spike function
+  /**
+  * @brief receive spike from other neuron
+  * @param simTime time the other neuron spiked
+  * @param J current given by the spike
+  */
   void receive(int simTime, double J);
+  /**
+  * @brief receive spike from external system
+  * @param J current given by the spikes
+  */
   void receiveFromExt(double J);
-  //add a target
+  /**
+  * @brief add a target to the neuron
+  * @param n target neuron
+  */
   void addTarget(neuron* n);
-  //add a spike
+  /**
+  * @brief add a spike to the neuron
+  * @param t spike time
+  */
   void addSpike(int t);
 
 };
