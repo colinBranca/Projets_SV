@@ -23,7 +23,7 @@ using namespace std;
 const int TIME_STEP = 1;
 
 int main(int argc, char* argv[]) {
-  if(argc < 3) {
+  if(argc < 2) {
     return 1;
   }
 
@@ -78,6 +78,7 @@ int main(int argc, char* argv[]) {
   std::default_random_engine gen; /**<random number generator */
   std::poisson_distribution<int> distribution(2); /**<poisson disrtibution */
 
+  /**<simulation */
   while(simTime <= totalTime) {
     // if(i_ext == current && simTime > stopCurrentTime) {
     //   i_ext = 0.0;
