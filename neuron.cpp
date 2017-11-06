@@ -42,6 +42,9 @@ void neuron::setCurrent(double i) {
 * @param n target neuron
 */
 void neuron::addTarget(neuron* n) {
+  if(n == null) {
+    throw "add no neuron!";
+  }
   targets.push_back(n);
 }
 
@@ -139,6 +142,11 @@ void neuron::printSpikeTimes() {
 * @param J current given by the spike
 */
 void neuron::receive(int simTime, double J) {
+  if(simTime < local_clock) {
+    throw "Simulation Time is not correct!";
+  } else if(J < 0) {
+    throw "Negative Current!";
+  }
   int inputIndex = (local_clock - simTime + bufferIndex - 1) % BUFFER_SIZE;
   buffer[inputIndex] += J;
 }
@@ -148,6 +156,9 @@ void neuron::receive(int simTime, double J) {
 * @param J current given by the spikes
 */
 void neuron::receiveFromExt(double J) {
+  if(J < 0) {
+    throw "Negative Current!";
+  }
   buffer[bufferIndex] += J;
 }
 

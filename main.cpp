@@ -23,15 +23,10 @@ using namespace std;
 const int TIME_STEP = 1;
 
 int main(int argc, char* argv[]) {
-  if(argc < 2) {
-    return 1;
-  }
+  assert(agrc == 2)
 
   //set arguments
-  double current = atof(argv[1]); /**< current*/
-  int totalTime = atof(argv[2]); /**< total simulation time */
-  int stopCurrentTime = totalTime/2; /**< time the current is stoped*/
-  double i_ext = current; /**< external current */
+  int totalTime = atof(argv[1]); /**< total simulation time */
   int Ne = 10000; /**< number of excitatory neurons */
   int Ni = Ne/4; /**< number of inhibitory neurons */
   int epsilon = 10; /**< epsilon */
@@ -65,11 +60,20 @@ int main(int argc, char* argv[]) {
   for(size_t i = 0; i < neurons.size(); ++i) {
     for(int j = 0; j < Ce; ++j) {
       int connectionIndex = rand() % Ne;
-      excitatoryNeurons[connectionIndex]->addTarget(neurons[i]);
+      try {
+        excitatoryNeurons[connectionIndex]->addTarget(neurons[i]);
+      } catch (const char* msg) {
+        cerr << msg << endl;
+      }
+
     }
     for(int j = 0; j < Ci; ++j) {
       int connectionIndex = rand() % Ni;
-      inhibitoryNeurons[connectionIndex]->addTarget(neurons[i]);
+      try {
+        inhibitoryNeurons[connectionIndex]->addTarget(neurons[i]);
+      } catch (const char* msg) {
+        std::cerr << msg << '\n';
+      }
     }
   }
 
@@ -80,20 +84,25 @@ int main(int argc, char* argv[]) {
 
   /**<simulation */
   while(simTime <= totalTime) {
-    // if(i_ext == current && simTime > stopCurrentTime) {
-    //   i_ext = 0.0;
-    //   n1.setCurrent(i_ext);
-    // }
 
     for(size_t i = 0; i < neurons.size(); ++i) {
       double J = (((int) i < Ne) ? Je : Ji);
       neuron* n = neurons[i];
-      n->receiveFromExt(Je * (double)distribution(gen));
+      try {
+        n->receiveFromExt(Je * (double)distribution(gen));
+      } catch (const char* msg) {
+        std::cerr << msg << '\n';
+      }
+
       if(n->updateState(simTime)) {
         outfile << i << "," << simTime << "\n";
         std::vector<neuron*> targets = n->getTargets();
         for(size_t tar = 0; tar < targets.size(); ++tar) {
-          targets[tar]->receive(simTime, J);
+          try {
+            targets[tar]->receive(simTime, J);
+          } catch (const char* msg) {
+            std::cerr << msg << '\n';
+          }
         }
       }
     }
