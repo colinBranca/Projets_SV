@@ -34,3 +34,7 @@ build/*
 googletest/*
 .DS_Store
 CMakeLists.txt
+
+#Doc
+html/*
+latex/*
