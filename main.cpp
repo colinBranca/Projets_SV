@@ -12,6 +12,7 @@
 #include <math.h>
 #include <vector>
 #include <random>
+#include <assert.h>
 
 using namespace std;
 
@@ -23,7 +24,7 @@ using namespace std;
 const int TIME_STEP = 1;
 
 int main(int argc, char* argv[]) {
-  assert(agrc == 2)
+  assert(argc == 2);
 
   //set arguments
   int totalTime = atof(argv[1]); /**< total simulation time */

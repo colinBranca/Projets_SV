@@ -42,7 +42,7 @@ void neuron::setCurrent(double i) {
 * @param n target neuron
 */
 void neuron::addTarget(neuron* n) {
-  if(n == null) {
+  if(n == NULL) {
     throw "add no neuron!";
   }
   targets.push_back(n);
