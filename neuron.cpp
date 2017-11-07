@@ -87,7 +87,6 @@ std::vector<neuron*> neuron::getTargets() {
 */
 bool neuron::updateState(int simTime) {
   bool spike = false;
-
   if(refractoring) {
     membranePotential = V_reset;
     updateRefractoring();
