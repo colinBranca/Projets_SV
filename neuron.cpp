@@ -96,7 +96,7 @@ bool neuron::updateState(int simTime) {
     spike = true;
   }
   else {
-    membranePotential = potentialFactor * membranePotential + i_ext *  currentFactor + buffer[bufferIndex];
+    membranePotential = potentialFactor * membranePotential + i_ext * currentFactor + buffer[bufferIndex];
   }
   buffer[bufferIndex] = 0;
   bufferIndex = (bufferIndex + 1) % BUFFER_SIZE;
@@ -146,7 +146,7 @@ void neuron::receive(int simTime, double J) {
   } else if(J < 0) {
     throw "Negative Current!";
   }
-  int inputIndex = (local_clock - simTime + bufferIndex - 1) % BUFFER_SIZE;
+  int inputIndex = (local_clock - simTime + bufferIndex - 1 + BUFFER_SIZE) % BUFFER_SIZE;
   buffer[inputIndex] += J;
 }
 
